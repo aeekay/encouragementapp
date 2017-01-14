@@ -14,6 +14,12 @@ router.get('/add', function(req, res, next) {
   res.render('addMessage', { title: 'Sisters Who Pray' });
 });
 
+/* POST Add Page */ 
+router.post('/add', function(req, res, next) {
+  app.post('/api/v1/sispray', function(req, res) { res.send('text:' + req.body.text); });
+  res.render('addMessage, { title: 'Sisters Who Pray' }); 
+}); 
+
 router.get('/api/v1/sispray', (req, res, next) => {
 	const results = []; 
 
