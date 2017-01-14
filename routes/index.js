@@ -37,6 +37,39 @@ router.get('/api/v1/sispray', (req, res, next) => {
 	});
 });
 
+router.post('/api/v1/sispray', (req, res, next) => {
+	const results = []; 
+
+	// Grab data from http request
+	const data = { text: req.body.text }; 
+
+	// Get a Postgres client from the connection pool 
+	pg.connect(connectionString, (err, client, done) => {
+		// Handle connection errors
+		if(err) {
+			done(); 
+			console.log(err); 
+			return res.status(500).json({success: false, data: err }); 
+		}
+
+		// SQL Query > Insert Data
+		client.query('INSERT INTO encouragement_messages(message) values($1)', [data.text]);
+		// SQL Query > Select Data
+		const query = client.query('SELECT * FROM encouragement_messages ORDER BY encouragement_message_id ASC'); 
+
+		// Stream results back one row at a time
+		query.on('row', (row) => {
+			results.push(row); 
+		});
+
+		// After all data is returned, close connection and return results
+		query.on('end', () => {
+			done(); 
+			return res.json(results); 
+		});
+	}); 
+}); 
+
 router.get('/api/v1/sispray/initialize', (req, res, next) => {
 	const results = []; 
 
