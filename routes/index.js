@@ -9,6 +9,11 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+/* GET Add Page */ 
+router.get('/add', function(req, res, next) {
+  res.render('addMessage', { title: 'Sisters Who Pray' });
+});
+
 router.get('/api/v1/sispray', (req, res, next) => {
 	const results = []; 
 
