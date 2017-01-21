@@ -1,11 +1,14 @@
 extends layout
 
+base(href="https://encouragementapp.herokuapp.com")
 block content
   h1= title
   p Welcome to #{title}. Use this form to add an encouraging message to the application.
-  form(name="add-message", method="post")
+  form(name="add-message", method="post", action="/api/v1/sispray")
     div.input
       span.label Message
       textarea(name="text", cols="40", row="5")
     div.actions
       input(type="submit", value="add")
+  script.
+  	$(function(){$('form[name=add-message]').submit(function(){$.post($(this).attr('action'), $(this).serialize(), function(json) { alert(json); }, 'json'); return false; });});
